@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from './components/Sidebar';
+import PageContainer from './containers/PageContainer';
+import './index.css'
+import Chat from './pages/Chat';
+import ChatDetail from './pages/ChatDetail';
+import Login from './pages/Login';
+import { useSelector } from 'react-redux'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
 
 function App() {
+  const { user } = useSelector(state => state.user)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {
+        !user ? <Login /> :
+          <Router>
+            <PageContainer>
+            <Sidebar />
+            <Routes>
+              <Route path='/' element={<Chat />} />
+              <Route path='chat/:id' element={<ChatDetail />} />
+            </Routes>
+            </PageContainer>
+          </Router>
+      }
+    </>
+
   );
 }
 
